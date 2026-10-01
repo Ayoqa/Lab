@@ -1,0 +1,515 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f6f1">
+  <title>From Foundations to Findings | Research Skills Programme</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #172a2b;
+      --muted: #536866;
+      --paper: #f4f6f1;
+      --white: #fffefa;
+      --line: #cdd8d1;
+      --green: #146b58;
+      --green-pale: #dcece3;
+      --coral: #bc4e37;
+      --coral-pale: #f8e2d9;
+      --gold: #855d08;
+      --gold-pale: #f3e8bf;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      min-width: 320px;
+      margin: 0;
+      color: var(--ink);
+      background-color: var(--paper);
+      background-image: radial-gradient(#cbd7ce 0.65px, transparent 0.65px);
+      background-size: 18px 18px;
+      font-family: "Avenir Next", Avenir, "Segoe UI", sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      width: min(1440px, 100%);
+      margin: 0 auto;
+      padding: 56px clamp(22px, 5.3vw, 78px) 48px;
+    }
+
+    .masthead {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .brand, .edition {
+      margin: 0;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 750;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .brand { display: flex; align-items: center; gap: 10px; }
+
+    .brand-mark {
+      display: grid;
+      width: 26px;
+      aspect-ratio: 1;
+      place-items: center;
+      color: var(--white);
+      background: var(--green);
+      border-radius: 50%;
+      font-family: Georgia, serif;
+      font-size: 15px;
+      letter-spacing: 0;
+    }
+
+    .intro {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: end;
+      gap: 32px;
+      padding: 62px 0 50px;
+    }
+
+    .eyebrow {
+      margin: 0 0 16px;
+      color: var(--coral);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      max-width: 760px;
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 54px;
+      font-weight: 500;
+      line-height: 1.04;
+    }
+
+    .intro-copy {
+      max-width: 610px;
+      margin: 18px 0 0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .total {
+      min-width: 160px;
+      padding: 17px 20px;
+      border-left: 2px solid var(--coral);
+    }
+
+    .total strong {
+      display: block;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 38px;
+      font-weight: 500;
+      line-height: 1;
+    }
+
+    .total span {
+      display: block;
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 750;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .flow-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 22px;
+    }
+
+    .flow-head h2 {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 23px;
+      font-weight: 500;
+    }
+
+    .legend { display: flex; flex-wrap: wrap; gap: 16px; }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 650;
+    }
+
+    .legend-dot { width: 9px; aspect-ratio: 1; border-radius: 50%; }
+    .legend-dot.live { background: var(--green); }
+    .legend-dot.independent { background: var(--gold); }
+
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      align-items: stretch;
+      gap: 0;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      counter-reset: session;
+    }
+
+    .step {
+      position: relative;
+      min-width: 0;
+      padding: 0 13px 0 0;
+      counter-increment: session;
+    }
+
+    .step:not(:first-child) { padding-left: 13px; }
+
+    .step:not(:last-child)::after {
+      position: absolute;
+      z-index: 2;
+      top: 31px;
+      right: -5px;
+      width: 10px;
+      height: 10px;
+      content: "";
+      border-top: 2px solid var(--green);
+      border-right: 2px solid var(--green);
+      transform: rotate(45deg);
+    }
+
+    .step-marker {
+      position: relative;
+      display: flex;
+      align-items: center;
+      min-height: 64px;
+      margin-bottom: 13px;
+    }
+
+    .step-marker::before {
+      position: absolute;
+      top: 31px;
+      right: 0;
+      left: 0;
+      height: 1px;
+      content: "";
+      background: var(--line);
+    }
+
+    .step:first-child .step-marker::before { left: 22px; }
+    .step:last-child .step-marker::before { right: calc(100% - 22px); }
+
+    .number {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      width: 44px;
+      aspect-ratio: 1;
+      place-items: center;
+      color: var(--green);
+      background: var(--green-pale);
+      border: 1px solid #bed5c8;
+      border-radius: 50%;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 17px;
+    }
+
+    .step.async .number {
+      color: var(--gold);
+      background: var(--gold-pale);
+      border-color: #e1d29c;
+    }
+
+    .step-card {
+      display: flex;
+      min-height: 318px;
+      flex-direction: column;
+      padding: 20px 17px 17px;
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-top: 3px solid var(--green);
+      border-radius: 5px;
+      box-shadow: 0 5px 14px rgb(23 42 43 / 4%);
+    }
+
+    .step.async .step-card { border-top-color: #b18a24; }
+    .step:last-child .step-card { border-top-color: var(--coral); }
+
+    .card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 19px;
+    }
+
+    .duration {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .mode {
+      padding: 5px 7px;
+      color: var(--green);
+      background: var(--green-pale);
+      border-radius: 3px;
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .async .mode { color: var(--gold); background: var(--gold-pale); }
+    .presentation .mode { color: var(--coral); background: var(--coral-pale); }
+
+    .step-card h3 {
+      margin: 0 0 13px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 23px;
+      font-weight: 500;
+      line-height: 1.12;
+    }
+
+    .step-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .step-card .session-label {
+      margin-bottom: 5px;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .card-bottom {
+      margin-top: auto;
+      padding-top: 19px;
+    }
+
+    .card-bottom span {
+      display: inline-block;
+      padding-top: 10px;
+      border-top: 1px solid var(--line);
+      color: var(--ink);
+      font-size: 11px;
+      font-weight: 750;
+      line-height: 1.4;
+    }
+
+    .takeaway {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      margin-top: 30px;
+      padding: 20px 22px;
+      color: var(--white);
+      background: var(--ink);
+      border-radius: 5px;
+    }
+
+    .takeaway p { margin: 0; font-size: 13px; line-height: 1.5; }
+    .takeaway strong { color: #b9dfca; font-weight: 700; }
+
+    .takeaway-tag {
+      flex: 0 0 auto;
+      color: #f4d58b;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.11em;
+      text-transform: uppercase;
+    }
+
+    footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      margin-top: 20px;
+      color: var(--muted);
+      font-size: 10px;
+    }
+
+    @media (max-width: 980px) {
+      .page { padding-top: 38px; }
+      .intro { padding: 48px 0 38px; }
+      h1 { font-size: 46px; }
+      .flow { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 23px 0; }
+      .step { padding-right: 12px; }
+      .step:not(:first-child) { padding-left: 12px; }
+      .step:nth-child(2n) { padding-right: 0; }
+      .step:nth-child(2n + 1) { padding-left: 0; }
+      .step-card { min-height: 285px; }
+      .step:nth-child(2n)::after { display: none; }
+      .step:nth-child(2n + 1):not(:last-child)::after { right: -5px; }
+      .step-marker::before { right: 0; }
+      .step:nth-child(2n) .step-marker::before { right: calc(100% - 22px); }
+      .step:nth-child(2n + 1) .step-marker::before { left: 22px; }
+      .step:last-child .step-marker::before { right: calc(100% - 22px); left: 0; }
+    }
+
+    @media (max-width: 600px) {
+      .page { padding: 26px 20px 30px; }
+      .edition { font-size: 9px; }
+      .intro { grid-template-columns: 1fr; gap: 22px; padding: 38px 0 32px; }
+      h1 { font-size: 40px; }
+      .intro-copy { font-size: 14px; }
+      .total { min-width: 0; padding: 11px 15px; }
+      .total strong { font-size: 31px; }
+      .flow-head { align-items: flex-start; flex-direction: column; gap: 13px; }
+      .flow { grid-template-columns: minmax(0, 1fr); gap: 0; }
+      .step, .step:not(:first-child), .step:nth-child(2n), .step:nth-child(2n + 1) {
+        padding: 0 0 18px 0;
+      }
+      .step-marker { min-height: 40px; margin-bottom: 8px; }
+      .step-marker::before,
+      .step:first-child .step-marker::before,
+      .step:last-child .step-marker::before,
+      .step:nth-child(2n) .step-marker::before,
+      .step:nth-child(2n + 1) .step-marker::before {
+        top: 20px;
+        right: auto;
+        left: 22px;
+        width: 1px;
+        height: calc(100% + 18px);
+      }
+      .step:last-child .step-marker::before { display: none; }
+      .step:not(:last-child)::after,
+      .step:nth-child(2n + 1):not(:last-child)::after { display: none; }
+      .step-card { min-height: 0; padding: 18px; }
+      .card-top { margin-bottom: 15px; }
+      .step-card h3 { font-size: 24px; }
+      .card-bottom { margin-top: 20px; }
+      .takeaway { align-items: flex-start; flex-direction: column; gap: 10px; }
+      footer { flex-direction: column; gap: 6px; }
+    }
+
+    @media print {
+      body { background: #fff; }
+      .page { width: 100%; padding: 20px; }
+      .step-card { box-shadow: none; }
+      .takeaway { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="masthead">
+      <p class="brand"><span class="brand-mark" aria-hidden="true">R</span> Research skills programme</p>
+      <p class="edition">Learning pathway / 01</p>
+    </header>
+
+    <section class="intro" aria-labelledby="page-title">
+      <div>
+        <p class="eyebrow">A practical route from data to delivery</p>
+        <h1 id="page-title">From foundations<br>to findings.</h1>
+        <p class="intro-copy">Build statistical confidence, shape a study, develop your project and share the results. Five focused sessions take you from core concepts to a group presentation.</p>
+      </div>
+      <div class="total" aria-label="Five sessions, five hours total">
+        <strong>05 hours</strong>
+        <span>Across five sessions</span>
+      </div>
+    </section>
+
+    <section aria-labelledby="flow-title">
+      <div class="flow-head">
+        <h2 id="flow-title">The learning pathway</h2>
+        <div class="legend" aria-label="Session format legend">
+          <span class="legend-item"><span class="legend-dot live" aria-hidden="true"></span>Live session</span>
+          <span class="legend-item"><span class="legend-dot independent" aria-hidden="true"></span>Independent work</span>
+        </div>
+      </div>
+
+      <ol class="flow">
+        <li class="step">
+          <div class="step-marker" aria-hidden="true"><span class="number">01</span></div>
+          <article class="step-card">
+            <div class="card-top"><span class="duration">1 hour</span><span class="mode">Live · sync</span></div>
+            <p class="session-label">Session 01</p>
+            <h3>Build the basics</h3>
+            <p>Mean, median and mode; data types; normal distributions; the Central Limit Theorem; measures of dispersion.</p>
+            <div class="card-bottom"><span>Statistical foundations</span></div>
+          </article>
+        </li>
+
+        <li class="step">
+          <div class="step-marker" aria-hidden="true"><span class="number">02</span></div>
+          <article class="step-card">
+            <div class="card-top"><span class="duration">1 hour</span><span class="mode">Live · sync</span></div>
+            <p class="session-label">Session 02</p>
+            <h3>Test your thinking</h3>
+            <p>Hypothesis testing, p-values and sample size calculation.</p>
+            <div class="card-bottom"><span>Inference &amp; planning</span></div>
+          </article>
+        </li>
+
+        <li class="step">
+          <div class="step-marker" aria-hidden="true"><span class="number">03</span></div>
+          <article class="step-card">
+            <div class="card-top"><span class="duration">1 hour</span><span class="mode">Live · sync</span></div>
+            <p class="session-label">Session 03</p>
+            <h3>Design the study</h3>
+            <p>Select a project, split into groups and explore study methodology, with an SPSS demonstration.</p>
+            <div class="card-bottom"><span>Project &amp; methodology</span></div>
+          </article>
+        </li>
+
+        <li class="step async">
+          <div class="step-marker" aria-hidden="true"><span class="number">04</span></div>
+          <article class="step-card">
+            <div class="card-top"><span class="duration">1 hour</span><span class="mode">Independent · async</span></div>
+            <p class="session-label">Session 04</p>
+            <h3>Workshop &amp; work</h3>
+            <p>Attend an academic language and study skills session, then commence project work.</p>
+            <div class="card-bottom"><span>Skills session + project start</span></div>
+          </article>
+        </li>
+
+        <li class="step presentation">
+          <div class="step-marker" aria-hidden="true"><span class="number">05</span></div>
+          <article class="step-card">
+            <div class="card-top"><span class="duration">1 hour</span><span class="mode">Live · sync</span></div>
+            <p class="session-label">Session 05</p>
+            <h3>Present &amp; reflect</h3>
+            <p>Group project presentations, followed by feedback.</p>
+            <div class="card-bottom"><span>15 minutes per group</span></div>
+          </article>
+        </li>
+      </ol>
+
+      <aside class="takeaway">
+        <p><strong>End point:</strong> present your group project and receive feedback.</p>
+        <span class="takeaway-tag">Learn · apply · present</span>
+      </aside>
+    </section>
+
+    <footer>
+      <span>Research skills / Learning pathway</span>
+      <span>4 live sessions · 1 independent-work session</span>
+    </footer>
+  </main>
+</body>
+</html>
