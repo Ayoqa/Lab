@@ -3,8 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f4f6f1">
-  <title>From Foundations to Findings | Research Skills Programme</title>
+  <meta name="theme-color" content="#ffffff">
+  <meta name="description" content="An annotated box and whisker plot of 15 weeks of sales data, with quartiles, IQR and outlier analysis.">
+  <title>Box and Whisker Plot Analysis</title>
   <style>
     :root {
       color-scheme: light;
@@ -407,6 +408,103 @@
       footer { flex-direction: column; gap: 6px; }
     }
 
+    .box-page {
+      width: min(1240px, 100%);
+      margin: 0 auto;
+      padding: 34px clamp(20px, 5vw, 64px) 42px;
+      color: #17243a;
+      background: #fff;
+    }
+
+    body { background: #fff; background-image: none; }
+    body > .page { display: none; }
+    .box-page *, .box-page *::before, .box-page *::after { box-sizing: border-box; }
+    .box-page .box-masthead { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-bottom: 17px; border-bottom: 1px solid #dce4ed; }
+    .box-page .box-brand, .box-page .box-edition, .box-page .box-eyebrow, .box-page .metric-label { margin: 0; font-size: 10px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+    .box-page .box-brand { display: flex; align-items: center; gap: 9px; color: #65738a; }
+    .box-page .box-brand-mark { display: grid; width: 26px; aspect-ratio: 1; place-items: center; color: #fff; background: #2878d0; border-radius: 7px; font-size: 14px; font-weight: 800; letter-spacing: 0; }
+    .box-page .box-edition { color: #65738a; }
+    .box-page .box-intro { display: flex; align-items: end; justify-content: space-between; gap: 30px; padding: 42px 0 27px; }
+    .box-page .box-eyebrow { margin-bottom: 11px; color: #7954ce; }
+    .box-page h1 { max-width: none; margin: 0; color: #17243a; font-family: Georgia, "Times New Roman", serif; font-size: clamp(34px, 5vw, 52px); font-weight: 500; line-height: 1.08; }
+    .box-page .box-intro-copy { max-width: 630px; margin: 12px 0 0; color: #65738a; font-size: 14px; line-height: 1.55; }
+    .box-page .sample-size { flex: 0 0 auto; padding: 8px 0 8px 16px; border-left: 3px solid #e58b22; }
+    .box-page .sample-size strong { display: block; font-family: Georgia, "Times New Roman", serif; font-size: 31px; font-weight: 500; line-height: 1; }
+    .box-page .sample-size span { display: block; margin-top: 6px; color: #65738a; font-size: 10px; font-weight: 750; letter-spacing: .07em; text-transform: uppercase; }
+    .box-page .summary { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); border-top: 1px solid #dce4ed; border-bottom: 1px solid #dce4ed; }
+    .box-page .metric { min-width: 0; padding: 14px 16px 15px; border-right: 1px solid #dce4ed; }
+    .box-page .metric:first-child { padding-left: 0; }
+    .box-page .metric:last-child { border-right: 0; }
+    .box-page .metric-label { display: block; color: #65738a; letter-spacing: .07em; }
+    .box-page .metric-value { display: block; margin-top: 5px; font-size: 19px; font-weight: 780; font-variant-numeric: tabular-nums; }
+    .box-page .minimum .metric-value { color: #2878d0; }
+    .box-page .q1 .metric-value { color: #15966d; }
+    .box-page .median .metric-value { color: #7954ce; }
+    .box-page .q3 .metric-value { color: #e58b22; }
+    .box-page .maximum .metric-value { color: #d94150; }
+    .box-page .chart-section { padding-top: 23px; }
+    .box-page .chart-heading, .box-page .data-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; }
+    .box-page .chart-heading { margin-bottom: 5px; }
+    .box-page .plot-legend { display: flex; flex-wrap: wrap; gap: 8px 16px; margin: 13px 0 3px; }
+    .box-page .plot-key { display: inline-flex; align-items: center; gap: 7px; color: #536278; font-size: 10px; font-weight: 700; }
+    .box-page .key-mark { width: 10px; height: 10px; border-radius: 2px; }
+    .box-page .key-whisker { background: #2878d0; }
+    .box-page .key-quartile { background: #15966d; }
+    .box-page .key-median { background: #7954ce; }
+    .box-page .key-iqr { background: #e58b22; }
+    .box-page .key-outlier { background: #fff; border: 2px solid #d94150; border-radius: 50%; }
+    .box-page h2 { margin: 0; color: #17243a; font-family: Georgia, "Times New Roman", serif; font-size: 21px; font-weight: 500; }
+    .box-page .chart-heading p, .box-page .data-heading p { margin: 0; color: #65738a; font-size: 11px; }
+    .box-page .chart-wrap { width: 100%; overflow: hidden; }
+    .box-page .chart { display: block; width: 100%; height: auto; overflow: visible; }
+    .box-page .chart text { font-family: "Avenir Next", Avenir, "Segoe UI", sans-serif; }
+    .box-page .callout-title { font-size: 13px; font-weight: 800; }
+    .box-page .callout-detail { fill: #65738a; font-size: 10px; font-weight: 600; }
+    .box-page .axis-label { fill: #65738a; font-size: 11px; font-weight: 650; }
+    .box-page .grid { stroke: #e8edf3; stroke-width: 1; }
+    .box-page .axis { stroke: #9caabd; stroke-width: 1.4; }
+    .box-page .whisker { stroke: #2878d0; stroke-width: 4; stroke-linecap: round; }
+    .box-page .cap { stroke: #2878d0; stroke-width: 3; }
+    .box-page .plot-box { fill: #e7f0fc; stroke: #15966d; stroke-width: 3; }
+    .box-page .plot-median { stroke: #7954ce; stroke-width: 7; stroke-linecap: round; }
+    .box-page .bracket { stroke: #e58b22; stroke-width: 3; stroke-linecap: round; }
+    .box-page .bracket-label { fill: #a95e08; font-size: 13px; font-weight: 800; }
+    .box-page .arrow { fill: none; stroke-width: 1.7; }
+    .box-page .chart-note { display: flex; align-items: center; gap: 10px; margin: -2px 0 0; padding: 11px 13px; color: #36465d; background: #f7f9fc; border-left: 3px solid #d94150; font-size: 12px; line-height: 1.5; }
+    .box-page .outlier-symbol { flex: 0 0 auto; width: 10px; aspect-ratio: 1; border: 2px solid #d94150; border-radius: 50%; }
+    .box-page .data-section { padding-top: 26px; }
+    .box-page .data-heading { margin-bottom: 12px; }
+    .box-page .observations { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); border-top: 1px solid #dce4ed; border-left: 1px solid #dce4ed; }
+    .box-page .observation { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-width: 0; padding: 9px 11px; border-right: 1px solid #dce4ed; border-bottom: 1px solid #dce4ed; }
+    .box-page .week { color: #65738a; font-size: 10px; font-weight: 700; }
+    .box-page .sales { font-size: 12px; font-weight: 750; font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .box-page footer { display: flex; justify-content: space-between; gap: 16px; margin-top: 20px; padding-top: 12px; border-top: 1px solid #dce4ed; color: #65738a; font-size: 10px; line-height: 1.5; }
+
+    @media (max-width: 650px) {
+      .box-page { padding: 22px 18px 28px; }
+      .box-page .box-intro { align-items: flex-start; flex-direction: column; gap: 19px; padding: 33px 0 23px; }
+      .box-page .sample-size { padding: 4px 0 4px 12px; }
+      .box-page .sample-size strong { font-size: 25px; }
+      .box-page .metric { padding: 11px 7px; }
+      .box-page .metric:first-child { padding-left: 0; }
+      .box-page .metric-label { min-height: 24px; font-size: 8px; line-height: 1.25; }
+      .box-page .metric-value { font-size: clamp(12px, 3.4vw, 17px); }
+      .box-page .chart-heading, .box-page .data-heading { align-items: flex-start; flex-direction: column; gap: 4px; }
+      .box-page .plot-legend { gap: 8px 12px; }
+      .box-page .plot-key { font-size: 9px; }
+      .box-page h2 { font-size: 19px; }
+      .box-page .chart-wrap { overflow-x: auto; }
+      .box-page .chart { min-width: 700px; }
+      .box-page .observations { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .box-page .observation { padding: 8px; }
+      .box-page footer { flex-direction: column; gap: 5px; }
+    }
+
+    @media print {
+      .box-page { width: 100%; padding: 12mm; }
+      .box-page .chart-note, .box-page .metric, .box-page .observation { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+    }
+
     @media print {
       body { background: #fff; }
       .page { width: 100%; padding: 20px; }
@@ -416,6 +514,137 @@
   </style>
 </head>
 <body>
+  <main class="box-page">
+    <header class="box-masthead">
+      <p class="box-brand"><span class="box-brand-mark" aria-hidden="true">S</span> Statistics / Data analysis</p>
+      <p class="box-edition">Descriptive statistics · 01</p>
+    </header>
+
+    <section class="box-intro" aria-labelledby="page-title">
+      <div>
+        <p class="box-eyebrow">Reading the spread of weekly sales</p>
+        <h1 id="page-title">Box and Whisker Plot Analysis</h1>
+        <p class="box-intro-copy">A five-number summary of 15 weeks of sales. The box captures the middle half of the observations; the whiskers extend to the smallest and largest values.</p>
+      </div>
+      <div class="sample-size" aria-label="Sample size: 15 weeks">
+        <strong>15 weeks</strong>
+        <span>Weekly observations</span>
+      </div>
+    </section>
+
+    <section class="summary" aria-label="Five-number summary">
+      <div class="metric minimum"><span class="metric-label">Minimum</span><span class="metric-value">£1,850</span></div>
+      <div class="metric q1"><span class="metric-label">Q1 · Lower quartile</span><span class="metric-value">£2,050</span></div>
+      <div class="metric median"><span class="metric-label">Median · Q2</span><span class="metric-value">£2,150</span></div>
+      <div class="metric q3"><span class="metric-label">Q3 · Upper quartile</span><span class="metric-value">£2,300</span></div>
+      <div class="metric maximum"><span class="metric-label">Maximum</span><span class="metric-value">£2,500</span></div>
+    </section>
+
+    <section class="chart-section" aria-labelledby="plot-title">
+      <div class="chart-heading">
+        <h2 id="plot-title">Weekly sales distribution</h2>
+        <p>Sales (£) · scale begins at £1,800</p>
+      </div>
+      <div class="plot-legend" aria-label="Plot element legend">
+        <span class="plot-key"><span class="key-mark key-whisker" aria-hidden="true"></span>Whiskers · min to max</span>
+        <span class="plot-key"><span class="key-mark key-quartile" aria-hidden="true"></span>Quartiles · box</span>
+        <span class="plot-key"><span class="key-mark key-median" aria-hidden="true"></span>Median</span>
+        <span class="plot-key"><span class="key-mark key-iqr" aria-hidden="true"></span>IQR bracket</span>
+        <span class="plot-key"><span class="key-mark key-outlier" aria-hidden="true"></span>Outlier marker</span>
+      </div>
+      <div class="chart-wrap">
+        <svg class="chart" viewBox="0 0 1000 470" role="img" aria-labelledby="chart-title chart-desc">
+          <title id="chart-title">Box and whisker plot of weekly sales</title>
+          <desc id="chart-desc">Minimum £1,850, first quartile £2,050, median £2,150, third quartile £2,300, and maximum £2,500. The interquartile range is £250. No outliers were detected.</desc>
+          <defs>
+            <marker id="arrow-blue" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#2878d0"/></marker>
+            <marker id="arrow-green" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#15966d"/></marker>
+            <marker id="arrow-purple" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#7954ce"/></marker>
+            <marker id="arrow-orange" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#e58b22"/></marker>
+            <marker id="arrow-red" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#d94150"/></marker>
+          </defs>
+
+          <g text-anchor="middle">
+            <text class="callout-title" x="174" y="42" fill="#2878d0">MINIMUM</text>
+            <text class="callout-detail" x="174" y="60">Smallest value · £1,850</text>
+            <text class="callout-title" x="348" y="42" fill="#15966d">Q1 · LOWER QUARTILE</text>
+            <text class="callout-detail" x="348" y="60">25% of weeks at or below</text>
+            <text class="callout-title" x="478" y="42" fill="#7954ce">MEDIAN · Q2</text>
+            <text class="callout-detail" x="478" y="60">Middle value · £2,150</text>
+            <text class="callout-title" x="652" y="42" fill="#e58b22">Q3 · UPPER QUARTILE</text>
+            <text class="callout-detail" x="652" y="60">75% of weeks at or below</text>
+            <text class="callout-title" x="826" y="42" fill="#d94150">MAXIMUM</text>
+            <text class="callout-detail" x="826" y="60">Largest value · £2,500</text>
+          </g>
+
+          <path class="arrow" d="M174 76 V218" stroke="#2878d0" marker-end="url(#arrow-blue)"/>
+          <path class="arrow" d="M348 76 V210" stroke="#15966d" marker-end="url(#arrow-green)"/>
+          <path class="arrow" d="M478 76 V208" stroke="#7954ce" marker-end="url(#arrow-purple)"/>
+          <path class="arrow" d="M652 76 V210" stroke="#e58b22" marker-end="url(#arrow-orange)"/>
+          <path class="arrow" d="M826 76 V218" stroke="#d94150" marker-end="url(#arrow-red)"/>
+
+          <g aria-hidden="true">
+            <line class="grid" x1="174" y1="176" x2="174" y2="316"/>
+            <line class="grid" x1="348" y1="176" x2="348" y2="316"/>
+            <line class="grid" x1="522" y1="176" x2="522" y2="316"/>
+            <line class="grid" x1="696" y1="176" x2="696" y2="316"/>
+            <line class="grid" x1="870" y1="176" x2="870" y2="316"/>
+          </g>
+
+          <line class="whisker" x1="217.5" y1="245" x2="391.5" y2="245"/>
+          <line class="whisker" x1="609" y1="245" x2="783" y2="245"/>
+          <line class="cap" x1="217.5" y1="222" x2="217.5" y2="268"/>
+          <line class="cap" x1="783" y1="222" x2="783" y2="268"/>
+          <rect class="plot-box" x="391.5" y="204" width="217.5" height="82" rx="4"/>
+          <line class="plot-median" x1="478.5" y1="204" x2="478.5" y2="286"/>
+
+          <line class="axis" x1="174" y1="316" x2="870" y2="316"/>
+          <g class="axis-label" text-anchor="middle">
+            <line class="axis" x1="174" y1="316" x2="174" y2="323"/><text x="174" y="343">£1,800</text>
+            <line class="axis" x1="348" y1="316" x2="348" y2="323"/><text x="348" y="343">£2,000</text>
+            <line class="axis" x1="522" y1="316" x2="522" y2="323"/><text x="522" y="343">£2,200</text>
+            <line class="axis" x1="696" y1="316" x2="696" y2="323"/><text x="696" y="343">£2,400</text>
+            <line class="axis" x1="870" y1="316" x2="870" y2="323"/><text x="870" y="343">£2,600</text>
+          </g>
+
+          <path class="bracket" d="M391.5 371 V383 H609 V371" fill="none"/>
+          <text class="bracket-label" x="500" y="410" text-anchor="middle">INTERQUARTILE RANGE (IQR) = Q3 − Q1 = £250</text>
+          <text class="callout-detail" x="500" y="433" text-anchor="middle">The middle 50% of weekly sales fall between £2,050 and £2,300.</text>
+        </svg>
+      </div>
+      <p class="chart-note"><span class="outlier-symbol" aria-hidden="true"></span><span><strong>No outliers detected.</strong> Using the 1.5 × IQR rule, the lower and upper fences are £1,675 and £2,675. Outliers, if present, are shown as red circles.</span></p>
+    </section>
+
+    <section class="data-section" aria-labelledby="data-title">
+      <div class="data-heading">
+        <h2 id="data-title">Sample data</h2>
+        <p>Weekly sales, in pounds sterling</p>
+      </div>
+      <div class="observations" role="list" aria-label="Sales for weeks 1 to 15">
+        <div class="observation" role="listitem"><span class="week">Week 01</span><span class="sales">£1,850</span></div>
+        <div class="observation" role="listitem"><span class="week">Week 02</span><span class="sales">£2,100</span></div>
+        <div class="observation" role="listitem"><span class="week">Week 03</span><span class="sales">£1,950</span></div>
+        <div class="observation" role="listitem"><span class="week">Week 04</span><span class="sales">£2,300</span></div>
+        <div class="observation" role="listitem"><span class="week">Week 05</span><span class="sales">£2,150</span></div>
+        <div class="observation" role="listitem"><span class="week">Week 06</span><span class="sales">£2,200</span></div>
+        <div class="observation" role="listitem"><span class="week">Week 07</span><span class="sales">£2,050</span></div>
+        <div class="observation" role="listitem"><span class="week">Week 08</span><span class="sales">£2,400</span></div>
+        <div class="observation" role="listitem"><span class="week">Week 09</span><span class="sales">£2,100</span></div>
+        <div class="observation" role="listitem"><span class="week">Week 10</span><span class="sales">£2,250</span></div>
+        <div class="observation" role="listitem"><span class="week">Week 11</span><span class="sales">£2,350</span></div>
+        <div class="observation" role="listitem"><span class="week">Week 12</span><span class="sales">£2,100</span></div>
+        <div class="observation" role="listitem"><span class="week">Week 13</span><span class="sales">£2,500</span></div>
+        <div class="observation" role="listitem"><span class="week">Week 14</span><span class="sales">£2,050</span></div>
+        <div class="observation" role="listitem"><span class="week">Week 15</span><span class="sales">£2,300</span></div>
+      </div>
+    </section>
+
+    <footer>
+      <span>Quartiles calculated by the median-of-halves method.</span>
+      <span>Outlier fences: Q1 − 1.5 × IQR and Q3 + 1.5 × IQR.</span>
+    </footer>
+  </main>
+
   <main class="page">
     <header class="masthead">
       <p class="brand"><span class="brand-mark" aria-hidden="true">R</span> Research skills programme</p>
